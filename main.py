@@ -1,15 +1,28 @@
 from metodo import metodo_biseccion
-from time import perf_counter_ns
+from time import perf_counter
+import pandas as pd
 
 
 def main() -> int:
-    example = [1, 4, -1, -4]
+    example = [3, 3, -1]
 
-    init = perf_counter_ns()
-    root = metodo_biseccion(example, (0, 2.5), 1e-100)
-    end = perf_counter_ns()
+    init = perf_counter()
+    root, aprox, d = metodo_biseccion(
+        example,
+        interval=(0, 1),
+        tol="1e-10",  # 1e-4
+        redondeo=8
+    )
+    end = perf_counter()
 
-    print(f"Raiz: {root}\ntiempo: {end - init} ns")
+    df = pd.DataFrame(d)
+
+    print(
+        f"La raiz {"aproximada " if aprox else ""}es: {root}\n" +
+        f"tiempo: {end - init} sec\n"
+    )
+
+    print(df)
 
     return 0
 
